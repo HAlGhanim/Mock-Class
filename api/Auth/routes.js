@@ -8,11 +8,11 @@ const {
 } = require("./controllers");
 const router = express.Router();
 
+router.post("/", createUser);
+
 router.get("/", getUsers);
 
 router.get("/:userId", getUserById);
-
-router.post("/createUser", createUser);
 
 router.put("/:userId", updateUser);
 
