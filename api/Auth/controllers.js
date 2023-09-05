@@ -1,39 +1,59 @@
+let users = require("../../users");
 
-exports.getUsers = async (req, res) => {
-  try {
-    
-  } catch (error) {
-
-  }
+const getAllUsers = (req, res) => {
+  console.log(users);
+  return res.status(200).json(users);
 };
-exports.getUserById = async (req, res) => {
-    try {
-        
-    } catch (error) {
-        
-    }
-}
 
-exports.createUser = async (req, res) => {
-  try {
-    
-  } catch (error) {
-    
+const getUserById = (req, res) => {
+  const { userId } = req.params;
+  const findUser = users.find((user) => user.id === +userId);
+  if (findUser) {
+    return res.status(200).json(findUser);
+  } else {
+    return res.status(404).json({ message: "User not found" });
   }
 };
 
-exports.updateUser = async (req, res, next) => {
-  try {
+const createUser = (req, res) => {
+  const newId = users[users.length - 1].id + 1;
+  const newUser = { id: newId, ...req.body };
+  users.push(newUser);
+  console.log(users[users.length - 1]);
+  return res.status(201).json(users);
+};
 
-  } catch (error) {
-    
+const deleteUser = (req, res) => {
+  const { userId } = req.params;
+  console.log(users);
+  if (users.find((user) => user.id === +userId)) {
+    users = users.filter((user) => user.id !== +userId);
+    console.log(users);
+    return res.status(204).end();
+  } else {
+    return res.status(404).json({ message: "User not found" });
   }
 };
 
-exports.deleteUser = async (req, res, next) => {
-  try {
-
-  } catch (error) {
-    
+const updateUser = (req, res) => {
+  const { userId } = req.params;
+  const findUser = users.find((user) => user.id === +userId);
+  if (!findUser) {
+    return res.status(404).json({
+      msg: "Not found!",
+    });
   }
+  for (const key in findUser) {
+    if (key !== "id")
+      findUser[key] = req.body[key] ? req.body[key] : findUser[key];
+  }
+  return res.status(201).json(findUser);
+};
+
+module.exports = {
+  getAllUsers,
+  getUserById,
+  createUser,
+  updateUser,
+  deleteUser,
 };
