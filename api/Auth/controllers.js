@@ -1,5 +1,3 @@
-const User = require("../../models/User");
-
 
 exports.getUsers = async (req, res) => {
   try {
@@ -23,7 +21,6 @@ exports.createUser = async (req, res) => {
     
   }
 };
-
 
 exports.updateUser = async (req, res, next) => {
   try {
